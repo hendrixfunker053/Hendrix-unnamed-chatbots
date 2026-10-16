@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101116">
+  <meta name="description" content="Crea asistentes de IA y haz que colaboren en un mismo chat.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Unnamed Hendrix Chatbots</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">H</div><div><strong>Unnamed</strong><span>Hendrix Chatbots</span></div></div>
+      <button class="primary new-chat" id="newChatBtn">＋ Nuevo chat</button>
+      <div class="side-label">CONVERSACIONES</div>
+      <div id="chatList" class="chat-list"></div>
+      <div class="side-bottom">
+        <button class="side-action" id="helpersBtn">✦ Mis asistentes <span id="helperCount">1</span></button>
+        <button class="side-action" id="settingsBtn">⚙ Ajustes de API</button>
+        <div class="local-note"><span class="status-dot"></span> Prototipo ligero · Android</div>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="icon-btn mobile-only" id="menuBtn" aria-label="Abrir menú">☰</button>
+        <div class="top-title"><span class="eyebrow">TU ESPACIO DE IA</span><strong id="activeChatTitle">Nuevo chat</strong></div>
+        <button class="model-pill" id="modeBadge" title="Estado de conexión"><span class="status-dot"></span><span id="modeText">API sin configurar</span></button>
+      </header>
+
+      <section class="chat-area" id="chatArea" aria-live="polite">
+        <div class="welcome" id="welcome">
+          <div class="welcome-symbol">✦</div>
+          <p class="eyebrow">BIENVENIDO A TU EQUIPO</p>
+          <h1>¿Qué vamos a<br><span>crear hoy?</span></h1>
+          <p class="welcome-copy">Elige tus asistentes, dales una tarea y deja que sus especialidades se complementen.</p>
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Ayúdame a planear una aplicación Android ligera."><span>⌘</span><div><strong>Crear una aplicación</strong><small>Plan, código y arquitectura</small></div><span class="arrow">↗</span></button>
+            <button class="suggestion" data-prompt="Explícame un problema técnico paso a paso."><span>⌁</span><div><strong>Resolver un problema</strong><small>Analizar y encontrar soluciones</small></div><span class="arrow">↗</span></button>
+            <button class="suggestion" data-prompt="Ayúdame a organizar una idea creativa en un proyecto realizable."><span>✧</span><div><strong>Dar forma a una idea</strong><small>Convertir ideas en un plan</small></div><span class="arrow">↗</span></button>
+          </div>
+        </div>
+        <div id="messages" class="messages"></div>
+      </section>
+
+      <footer class="composer-wrap">
+        <div class="selected-row"><span class="selected-label">ASISTENTES ACTIVOS</span><div id="activeHelpers" class="active-helpers"></div><button class="text-btn" id="chooseHelpersBtn">Editar</button></div>
+        <form id="composer" class="composer">
+          <textarea id="messageInput" rows="1" placeholder="Escribe tu mensaje…" aria-label="Mensaje" required></textarea>
+          <div class="composer-bottom"><span class="hint">Enter para enviar · Shift + Enter para nueva línea</span><button class="send-btn" id="sendBtn" type="submit" aria-label="Enviar mensaje">↑</button></div>
+        </form>
+        <p class="disclaimer">La IA puede equivocarse. Revisa el código y la información importante.</p>
+      </footer>
+    </main>
+  </div>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <section class="drawer" id="helpersDrawer" aria-labelledby="helpersTitle" hidden>
+    <div class="drawer-head"><div><p class="eyebrow">TU EQUIPO</p><h2 id="helpersTitle">Asistentes</h2></div><button class="icon-btn close-drawer" aria-label="Cerrar">×</button></div>
+    <p class="drawer-copy">Selecciona uno o varios asistentes para que colaboren en esta conversación.</p>
+    <div id="helperOptions" class="helper-options"></div>
+    <button class="secondary full" id="createHelperBtn">＋ Crear asistente</button>
+    <button class="primary full" id="applyHelpersBtn">Aplicar selección</button>
+  </section>
+
+  <section class="drawer" id="createDrawer" aria-labelledby="createTitle" hidden>
+    <div class="drawer-head"><div><p class="eyebrow">PERSONALIZA TU IA</p><h2 id="createTitle">Crear asistente</h2></div><button class="icon-btn close-drawer" aria-label="Cerrar">×</button></div>
+    <form id="createHelperForm" class="settings-form">
+      <label>Nombre<input id="helperName" maxlength="40" placeholder="Ej. NOVA" required></label>
+      <label>Especialidad<input id="helperRole" maxlength="80" placeholder="Ej. Programación y depuración" required></label>
+      <label>Personalidad y comportamiento<textarea id="helperDescription" rows="3" maxlength="1200" placeholder="¿Cómo piensa, explica y trabaja?" required></textarea></label>
+      <label>Historia (opcional)<textarea id="helperBackstory" rows="2" maxlength="600" placeholder="Origen, objetivos o contexto…"></textarea></label>
+      <button class="primary full" type="submit">Guardar asistente</button>
+    </form>
+  </section>
+
+  <section class="drawer" id="settingsDrawer" aria-labelledby="settingsTitle" hidden>
+    <div class="drawer-head"><div><p class="eyebrow">CONEXIÓN</p><h2 id="settingsTitle">Ajustes de API</h2></div><button class="icon-btn close-drawer" aria-label="Cerrar">×</button></div>
+    <p class="drawer-copy">La interfaz se aloja en GitHub Pages. Para usar IA en la nube, conecta el backend cuando esté desplegado. La clave privada nunca debe guardarse aquí.</p>
+    <form id="settingsForm" class="settings-form">
+      <label>URL del backend<input id="backendUrl" type="url" placeholder="https://tu-backend.example.com" autocomplete="url"></label>
+      <p class="field-note">Este campo solo guarda la dirección del servidor en este navegador, no una clave secreta.</p>
+      <button class="primary full" type="submit">Guardar conexión</button>
+      <button class="secondary full" type="button" id="testConnectionBtn">Probar conexión</button>
+      <div id="connectionMessage" class="connection-message" role="status"></div>
+    </form>
+    <div class="security-card"><strong>🔒 Seguridad</strong><p>Configura la clave del proveedor como variable de entorno en el backend. Nunca la pongas en index.html, app.js ni en el repositorio.</p></div>
+  </section>
+  <script src="app.js" defer></script>
+</body>
+</html>
