@@ -1,0 +1,11 @@
+{
+  "name": "Unnamed Hendrix Chatbots",
+  "short_name": "Hendrix AI",
+  "description": "Asistentes de IA personalizados que colaboran en tus chats.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101116",
+  "theme_color": "#101116",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
